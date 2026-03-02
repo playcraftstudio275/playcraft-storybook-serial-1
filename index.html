@@ -1,8 +1,8 @@
 <!-- ================================================= -->
 <!-- PLAYCRAFT STORYBOOK - SERIAL 1                   -->
 <!-- Theme: Forest Adventure & Exploration            -->
+<!-- Icon Version • Auto Music • Stagger Animation    -->
 <!-- Fully Responsive: Desktop • Tablet • Mobile • TV -->
-<!-- Lightweight Animation • Pastel DNA Maintained    -->
 <!-- ================================================= -->
 
 <!DOCTYPE html>
@@ -17,14 +17,14 @@
     <title>Serial 1 - Pipi dan Kisah-Kisah yang Membesarkan Hati</title>
 
     <!-- ============================= -->
-    <!-- GOOGLE FONTS (Rounded Friendly) -->
+    <!-- GOOGLE FONTS -->
     <!-- ============================= -->
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
 
 /* ================================================= */
-/* GLOBAL RESET - Consistent layout across devices  */
+/* GLOBAL RESET                                      */
 /* ================================================= */
 *{
     margin:0;
@@ -32,6 +32,9 @@
     box-sizing:border-box;
 }
 
+/* ================================================= */
+/* BODY BACKGROUND + FOREST GLOW DNA ROOT           */
+/* ================================================= */
 body{
     font-family:'Poppins', sans-serif;
     min-height:100vh;
@@ -42,9 +45,7 @@ body{
     position:relative;
 }
 
-/* ================================================= */
-/* FLOATING FOREST GLOW (Lightweight Animation)     */
-/* ================================================= */
+/* Floating Glow Animation */
 body::before{
     content:"";
     position:fixed;
@@ -63,19 +64,13 @@ body::before{
 }
 
 /* ================================================= */
-/* MAIN CONTAINER - Centered Layout                 */
+/* MAIN CONTAINER                                   */
 /* ================================================= */
 .container{
     max-width:1100px;
     margin:0 auto;
     position:relative;
     z-index:1;
-    animation:fadeIn 1s ease;
-}
-
-@keyframes fadeIn{
-    from{opacity:0; transform:translateY(20px);}
-    to{opacity:1; transform:translateY(0);}
 }
 
 /* ================================================= */
@@ -85,7 +80,7 @@ body::before{
     display:inline-block;
     margin-bottom:30px;
     padding:8px 18px;
-    background:rgba(255,255,255,0.85);
+    background:rgba(255,255,255,0.9);
     color:#2F4B7C;
     border-radius:20px;
     text-decoration:none;
@@ -98,33 +93,28 @@ body::before{
 }
 
 /* ================================================= */
-/* TITLE SECTION                                    */
+/* TITLE & DESCRIPTION                              */
 /* ================================================= */
 h1{
     font-family:'Baloo 2', cursive;
     font-size:clamp(2rem,5vw,3rem);
     margin-bottom:15px;
-    text-shadow:0 0 12px rgba(255,255,255,0.3);
 }
 
-/* ================================================= */
-/* DESCRIPTION                                      */
-/* ================================================= */
 .description{
     max-width:800px;
     line-height:1.7;
     opacity:0.95;
     margin-bottom:50px;
-    font-size:clamp(0.95rem,2vw,1.05rem);
 }
 
 /* ================================================= */
-/* EPISODE GRID (Auto Responsive)                   */
+/* EPISODE GRID                                     */
 /* ================================================= */
 .episode-grid{
     display:grid;
     gap:25px;
-    grid-template-columns:repeat(auto-fit, minmax(260px,1fr));
+    grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
 }
 
 /* ================================================= */
@@ -132,55 +122,46 @@ h1{
 /* ================================================= */
 .episode-card{
     background:rgba(255,255,255,0.18);
-    padding:20px;
+    padding:25px;
     border-radius:25px;
     text-decoration:none;
     color:white;
     backdrop-filter:blur(8px);
     border:1px solid rgba(255,255,255,0.25);
     transition:0.35s ease;
+
+    /* Animation default state */
+    opacity:0;
+    transform:translateY(30px);
 }
 
+/* Hover */
 .episode-card:hover{
-    transform:translateY(-8px) scale(1.04);
+    transform:translateY(-8px) scale(1.05);
     box-shadow:0 15px 35px rgba(255,180,220,0.35);
 }
 
 /* ================================================= */
-/* EPISODE THUMBNAIL                                */
+/* EPISODE ICON                                     */
 /* ================================================= */
-.episode-thumb{
-    width:100%;
-    height:160px;
-    overflow:hidden;
-    border-radius:18px;
+.episode-icon{
+    font-size:42px;
     margin-bottom:15px;
+    animation:floatIcon 4s ease-in-out infinite;
 }
 
-.episode-thumb img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    transition:0.4s ease;
-}
-
-.episode-card:hover .episode-thumb img{
-    transform:scale(1.08);
+@keyframes floatIcon{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-6px);}
 }
 
 /* ================================================= */
-/* EPISODE TEXT                                     */
+/* TEXT STYLE                                       */
 /* ================================================= */
 .episode-number{
     font-size:14px;
     opacity:0.7;
     margin-bottom:8px;
-    animation:softPulse 3s ease-in-out infinite;
-}
-
-@keyframes softPulse{
-    0%,100%{opacity:0.6;}
-    50%{opacity:1;}
 }
 
 .episode-title{
@@ -204,7 +185,6 @@ h1{
     font-size:20px;
     cursor:pointer;
     box-shadow:0 6px 18px rgba(0,0,0,0.2);
-    backdrop-filter:blur(6px);
     transition:0.3s ease;
     z-index:10;
 }
@@ -214,41 +194,19 @@ h1{
 }
 
 /* ================================================= */
-/* MOBILE OPTIMIZATION                              */
+/* MOBILE                                           */
 /* ================================================= */
 @media(max-width:600px){
-
-    body{
-        padding:40px 15px;
-    }
-
-    .episode-thumb{
-        height:130px;
-    }
-
-    .episode-title{
-        font-size:0.95rem;
-    }
-
+    body{padding:40px 15px;}
+    .episode-title{font-size:0.95rem;}
 }
 
 /* ================================================= */
-/* SMART TV OPTIMIZATION                            */
+/* SMART TV                                         */
 /* ================================================= */
 @media(min-width:1600px){
-
-    body{
-        padding:100px 40px;
-    }
-
-    .episode-thumb{
-        height:200px;
-    }
-
-    .episode-title{
-        font-size:1.2rem;
-    }
-
+    body{padding:100px 40px;}
+    .episode-title{font-size:1.2rem;}
     .music-btn{
         width:65px;
         height:65px;
@@ -256,7 +214,6 @@ h1{
         bottom:40px;
         right:40px;
     }
-
 }
 
 </style>
@@ -266,7 +223,7 @@ h1{
 
 <div class="container">
 
-    <!-- BACK TO MAIN STORYBOOK -->
+    <!-- BACK BUTTON -->
     <a href="#" class="back-btn">⬅ Kembali ke Storybook</a>
 
     <!-- TITLE -->
@@ -282,149 +239,62 @@ h1{
     <!-- EPISODE GRID -->
     <div class="episode-grid">
 
-            <!-- =================================== -->
-    <!-- EPISODE GRID -->
-    <!-- =================================== -->
+        <!-- Episodes -->
+        <a href="episode-1/" class="episode-card"><div class="episode-icon">🌿</div><div class="episode-number">Episode 1</div><div class="episode-title">Mangga Emas Pipi</div></a>
+        <a href="episode-2/" class="episode-card"><div class="episode-icon">🍃</div><div class="episode-number">Episode 2</div><div class="episode-title">Petualangan Biji Ajaib Pipi</div></a>
+        <a href="episode-3/" class="episode-card"><div class="episode-icon">🌸</div><div class="episode-number">Episode 3</div><div class="episode-title">Pesta Kebun Pelangi Pipi</div></a>
+        <a href="episode-4/" class="episode-card"><div class="episode-icon">✨</div><div class="episode-number">Episode 4</div><div class="episode-title">Pipi dan Rahasia Gua Berkilau</div></a>
+        <a href="episode-5/" class="episode-card"><div class="episode-icon">🌊</div><div class="episode-number">Episode 5</div><div class="episode-title">Pipi dan Pahlawan Sungai Kebersihan</div></a>
+        <a href="episode-6/" class="episode-card"><div class="episode-icon">🌧️</div><div class="episode-number">Episode 6</div><div class="episode-title">Pipi dan Badai Besar di Hutan</div></a>
+        <a href="episode-7/" class="episode-card"><div class="episode-icon">🏅</div><div class="episode-number">Episode 7</div><div class="episode-title">Pipi dan Olimpiade Hutan Ceria</div></a>
+        <a href="episode-8/" class="episode-card"><div class="episode-icon">🎈</div><div class="episode-number">Episode 8</div><div class="episode-title">Pipi dan Festival Layang-Layang Pelangi</div></a>
+        <a href="episode-9/" class="episode-card"><div class="episode-icon">📖</div><div class="episode-number">Episode 9</div><div class="episode-title">Pipi dan Rahasia Buah Pengetahuan</div></a>
+        <a href="episode-10/" class="episode-card"><div class="episode-icon">🎵</div><div class="episode-number">Episode 10</div><div class="episode-title">Pipi dan Parade Musik Hutan</div></a>
+        <a href="episode-11/" class="episode-card"><div class="episode-icon">🔢</div><div class="episode-number">Episode 11</div><div class="episode-title">Pipi dan Rahasia Lembah Angka</div></a>
+        <a href="episode-12/" class="episode-card"><div class="episode-icon">🌈</div><div class="episode-number">Episode 12</div><div class="episode-title">Pipi dan Pelangi di Dalam Hati</div></a>
 
-    <!-- EPISODE 1 -->
-    <a href="episode-1/" class="episode-card">
-        <div class="episode-thumb">
-            <img src="images/ep1.jpg" alt="Episode 1">
-        </div>
-        <div class="episode-number">Episode 1</div>
-        <div class="episode-title">Mangga Emas Pipi</div>
-    </a>
-
-    <!-- EPISODE 2 -->
-    <a href="episode-2/" class="episode-card">
-        <div class="episode-thumb">
-            <img src="images/ep2.jpg" alt="Episode 2">
-        </div>
-        <div class="episode-number">Episode 2</div>
-        <div class="episode-title">Petualangan Biji Ajaib Pipi</div>
-    </a>
-
-    <!-- EPISODE 3 -->
-    <a href="episode-3/" class="episode-card">
-        <div class="episode-thumb">
-            <img src="images/ep3.jpg" alt="Episode 3">
-        </div>
-        <div class="episode-number">Episode 3</div>
-        <div class="episode-title">Pesta Kebun Pelangi Pipi</div>
-    </a>
-
-    <!-- EPISODE 4 -->
-    <a href="episode-4/" class="episode-card">
-        <div class="episode-thumb">
-            <img src="images/ep4.jpg" alt="Episode 4">
-        </div>
-        <div class="episode-number">Episode 4</div>
-        <div class="episode-title">Pipi dan Rahasia Gua Berkilau</div>
-    </a>
-
-    <!-- EPISODE 5 -->
-    <a href="episode-5/" class="episode-card">
-        <div class="episode-thumb">
-            <img src="images/ep5.jpg" alt="Episode 5">
-        </div>
-        <div class="episode-number">Episode 5</div>
-        <div class="episode-title">Pipi dan Pahlawan Sungai Kebersihan</div>
-    </a>
-
-    <!-- EPISODE 6 -->
-    <a href="episode-6/" class="episode-card">
-        <div class="episode-thumb">
-            <img src="images/ep6.jpg" alt="Episode 6">
-        </div>
-        <div class="episode-number">Episode 6</div>
-        <div class="episode-title">Pipi dan Badai Besar di Hutan</div>
-    </a>
-
-    <!-- EPISODE 7 -->
-    <a href="episode-7/" class="episode-card">
-        <div class="episode-thumb">
-            <img src="images/ep7.jpg" alt="Episode 7">
-        </div>
-        <div class="episode-number">Episode 7</div>
-        <div class="episode-title">Pipi dan Olimpiade Hutan Ceria</div>
-    </a>
-
-    <!-- EPISODE 8 -->
-    <a href="episode-8/" class="episode-card">
-        <div class="episode-thumb">
-            <img src="images/ep8.jpg" alt="Episode 8">
-        </div>
-        <div class="episode-number">Episode 8</div>
-        <div class="episode-title">Pipi dan Festival Layang-Layang Pelangi</div>
-    </a>
-
-    <!-- EPISODE 9 -->
-    <a href="episode-9/" class="episode-card">
-        <div class="episode-thumb">
-            <img src="images/ep9.jpg" alt="Episode 9">
-        </div>
-        <div class="episode-number">Episode 9</div>
-        <div class="episode-title">Pipi dan Rahasia Buah Pengetahuan</div>
-    </a>
-
-    <!-- EPISODE 10 -->
-    <a href="episode-10/" class="episode-card">
-        <div class="episode-thumb">
-            <img src="images/ep10.jpg" alt="Episode 10">
-        </div>
-        <div class="episode-number">Episode 10</div>
-        <div class="episode-title">Pipi dan Parade Musik Hutan</div>
-    </a>
-
-    <!-- EPISODE 11 -->
-    <a href="episode-11/" class="episode-card">
-        <div class="episode-thumb">
-            <img src="images/ep11.jpg" alt="Episode 11">
-        </div>
-        <div class="episode-number">Episode 11</div>
-        <div class="episode-title">Pipi dan Rahasia Lembah Angka</div>
-    </a>
-
-    <!-- EPISODE 12 -->
-    <a href="episode-12/" class="episode-card">
-        <div class="episode-thumb">
-            <img src="images/ep12.jpg" alt="Episode 12">
-        </div>
-        <div class="episode-number">Episode 12</div>
-        <div class="episode-title">Pipi dan Pelangi di Dalam Hati</div>
-    </a>
+    </div>
+</div>
 
 <!-- =================================== -->
-<!-- FOREST AMBIENCE MUSIC               -->
+<!-- FOREST AMBIENCE MUSIC (AUTO PLAY)  -->
 <!-- =================================== -->
-<audio id="bg-music" loop>
+<audio id="bg-music" autoplay loop>
     <source src="audio/forest-ambience.mp3" type="audio/mpeg">
 </audio>
 
-<!-- MUSIC CONTROL BUTTON -->
-<button id="music-toggle" class="music-btn">🌲</button>
+<button id="music-toggle" class="music-btn">🔊</button>
 
-<!-- =================================== -->
-<!-- AUDIO CONTROL SCRIPT (LIGHTWEIGHT)  -->
-<!-- =================================== -->
 <script>
 document.addEventListener("DOMContentLoaded", function(){
 
+    const cards = document.querySelectorAll(".episode-card");
     const music = document.getElementById("bg-music");
     const toggle = document.getElementById("music-toggle");
 
+    /* Set soft volume */
     music.volume = 0.2;
 
-    toggle.addEventListener("click", function(){
+    /* Force play (for browser policy fallback) */
+    music.play().catch(()=>{});
 
+    /* Stagger animation */
+    cards.forEach((card, index)=>{
+        setTimeout(()=>{
+            card.style.opacity="1";
+            card.style.transform="translateY(0)";
+        }, index * 120);
+    });
+
+    /* Music Toggle */
+    toggle.addEventListener("click", function(){
         if(music.paused){
             music.play();
-            toggle.innerHTML = "🔊";
-        } else {
+            toggle.innerHTML="🔊";
+        }else{
             music.pause();
-            toggle.innerHTML = "🌲";
+            toggle.innerHTML="🌲";
         }
-
     });
 
 });
