@@ -210,6 +210,37 @@ body{
 
 }
 
+     /* =====================================================
+   TABLET PORTRAIT FIX
+   mencegah gambar terpotong saat rotasi
+===================================================== */
+
+@media (orientation: portrait) and (max-width:1024px){
+
+  .book{
+    height:90vh;
+  }
+
+  .page img{
+    object-fit:contain;
+  }
+
+}
+
+/* =====================================================
+   TABLET IMAGE SAFE AREA
+===================================================== */
+
+@media (max-width:1024px){
+
+  .page{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+}
+
 </style>
 </head>
 
@@ -505,6 +536,20 @@ function playNarration(page){
   narration.src = "audio/" + page + ".mp3";
   narration.play().catch(()=>{});
 }
+
+     /* =====================================================
+   ROTATION FIX
+   refresh layout ketika device diputar
+===================================================== */
+
+window.addEventListener("orientationchange", function(){
+
+  setTimeout(()=>{
+    const book = document.querySelector(".book");
+    book.style.height = "85vh";
+  },200);
+
+});
 
 </script>
 
