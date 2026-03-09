@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+
+<!-- =====================================================
+     VIEWPORT SETTING (Mobile Safe & Prevent Zoom)
+===================================================== -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<!-- =====================================================
+     PAGE TITLE (Episode 4 - Locked)
+===================================================== -->
+<title>Episode 4 - Locked</title>
+
+<style>
+
+/* =====================================================
+   GLOBAL BODY STYLE
+===================================================== */
+body{
+  margin:0;
+  background:black;
+  overflow:hidden;
+  font-family:Arial;
+}
+
+/* =====================================================
+   LOCK SCREEN OVERLAY
+===================================================== */
+#lockScreen{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.95);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:2000;
+}
+
+.lockCard{
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  width:90%;
+  max-width:400px;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,0.4);
+}
+
+.lockCard input{
+  width:100%;
+  padding:12px;
+  margin-top:15px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  font-size:14px;
+}
+
+.lockCard button{
+  width:100%;
+  margin-top:12px;
+  padding:12px;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.waBtn{ background:#25D366; color:white; }
+.unlockBtn{ background:#E79A34; color:white; }
+
+/* =====================================================
+   INTRO SCREEN
+===================================================== */
+#intro{
+  position:fixed;
+  inset:0;
+  background:black;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
+  transition:opacity 1s ease;
+}
+
+.logo{
+  color:white;
+  font-size:2rem;
+  letter-spacing:4px;
+  opacity:0;
+  animation:fadeIn 1.5s forwards;
+}
+
+@keyframes fadeIn{
+  to{opacity:1;}
+}
+
+/* =====================================================
+   BOOK CONTAINER
+===================================================== */
+.book{
+  position:absolute;
+  width:70vw;
+  height:85vh;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  perspective:3000px;
+}
+
+/* =====================================================
+   SHEET (DEFAULT ENGINE)
+===================================================== */
+.sheet{
+  position:absolute;
+  width:100%;
+  height:100%;
+  transform-origin:left;
+  transform-style:preserve-3d;
+  transition:transform 1.2s ease-in-out;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+}
+
+.coverSheet{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#111;
+}
+
+.coverSheet img{
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+}
+
+.page{
+  position:absolute;
+  width:50%;
+  height:100%;
+  top:0;
+  overflow:hidden;
+}
+
+.page img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+@media (max-width:768px){
+  .page img{
+    object-fit:contain;
+    background:black;
+  }
+  .book{
+    width:95vw;
+    height:85vh;
+  }
+}
+
+.left{ left:0; }
+.right{ right:0; }
+
+.sheet.flipped{
+  transform:rotateY(-180deg);
+}
+
+.startBtn{
+  position:absolute;
+  bottom:30px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:12px 28px;
+  border:none;
+  border-radius:30px;
+  background:white;
+  cursor:pointer;
+  font-weight:bold;
+  z-index:50;
+}
+
+.endScreen{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:20px;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.4s ease;
+  z-index:999;
+}
+
+.endScreen.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.endScreen button{
+  background:#E79A34;
+  color:white;
+  border:none;
+  padding:16px 42px;
+  font-size:18px;
+  border-radius:40px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.pageNumber{
+  position:absolute;
+  bottom:15px;
+  right:20px;
+  color:white;
+  font-size:14px;
+  opacity:0.8;
+  z-index:50;
+  display:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     LOCK SCREEN
+===================================================== -->
+<div id="lockScreen">
+  <div class="lockCard">
+    <h2>🔒 Episode 4 Terkunci</h2>
+    <p><strong>Free Episode sudah selesai,<br>lanjutkan petualangan!</strong></p>
+    <p>Harga Unlock: <strong>Rp 15.000</strong></p>
+
+    <button class="waBtn" onclick="openWhatsApp()">Buka via WhatsApp</button>
+    <input type="text" id="passInput" placeholder="Masukkan kode unlock">
+    <button class="unlockBtn" onclick="checkPass()">Buka Episode</button>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div id="intro">
+  <div class="logo">PLAYCRAFT STUDIO</div>
+</div>
+
+<!-- AUDIO -->
+<audio id="whoosh" src="audio/whoosh.mp3"></audio>
+<audio id="bgMusic" src="audio/bg1.mp3" loop></audio>
+<audio id="narration"></audio>
+
+<!-- BOOK -->
+<div class="book" id="book">
+
+<!-- COVER -->
+<div class="sheet coverSheet">
+  <img src="image/0.jpg">
+  <button class="startBtn" id="startBtn">Mulai Cerita</button>
+</div>
+
+ <!-- ==== SEMUA SHEET TETAP SAMA ==== -->
+<!-- SHEET 1 - 9 (tidak diubah) -->
+
+<!-- SHEET 1 -->
+<div class="sheet">
+  <div class="page left">
+    <img src="image/1b.jpg">
+  </div>
+  <div class="page right">
+    <img src="image/1a.jpg">
+  </div>
+</div>
+
+<!-- SHEET 2 -->
+<div class="sheet">
+  <div class="page left">
+    <img src="image/2b.jpg">
+  </div>
+  <div class="page right">
+    <img src="image/2a.jpg">
+  </div>
+</div>
+
+<!-- SHEET 3 -->
+<div class="sheet">
+  <div class="page left">
+    <img src="image/3b.jpg">
+  </div>
+  <div class="page right">
+    <img src="image/3a.jpg">
+  </div>
+</div>
+
+<!-- SHEET 4 -->
+<div class="sheet">
+  <div class="page left">
+    <img src="image/4b.jpg">
+  </div>
+  <div class="page right">
+    <img src="image/4a.jpg">
+  </div>
+</div>
+
+<!-- SHEET 5 -->
+<div class="sheet">
+  <div class="page left">
+    <img src="image/5b.jpg">
+  </div>
+  <div class="page right">
+    <img src="image/5a.jpg">
+  </div>
+</div>
+
+<!-- SHEET 6 -->
+<div class="sheet">
+  <div class="page left">
+    <img src="image/6b.jpg">
+  </div>
+  <div class="page right">
+    <img src="image/6a.jpg">
+  </div>
+</div>
+
+<!-- SHEET 7 -->
+<div class="sheet">
+  <div class="page left">
+    <img src="image/7b.jpg">
+  </div>
+  <div class="page right">
+    <img src="image/7a.jpg">
+  </div>
+</div>
+
+<!-- SHEET 8 -->
+<div class="sheet">
+  <div class="page left">
+    <img src="image/8b.jpg">
+  </div>
+  <div class="page right">
+    <img src="image/8a.jpg">
+  </div>
+</div>
+
+<!-- SHEET 9 -->
+<div class="sheet">
+  <div class="page left">
+    <img src="image/9b.jpg">
+  </div>
+  <div class="page right">
+    <img src="image/9a.jpg">
+  </div>
+</div>
+
+
+<div class="pageNumber" id="pageNumber"></div>
+
+<div class="endScreen" id="endScreen">
+  <button id="restartBtn">Ulangi</button>
+  <button id="exitBtn">Keluar</button>
+</div>
+
+</div>
+
+<script>
+
+/* =====================================================
+   MASTER LOCK SYSTEM (UNTUK EPS 4–12)
+   HANYA GANTI ANGKA EPISODE DI SINI
+===================================================== */
+
+// 🔥 UBAH ANGKA INI SAJA UNTUK EPS BERIKUTNYA
+const EPISODE_NUMBER = 4;
+
+// Format kode otomatis: PIPI-EPS4-2026
+const correctPass = `PIPI-EPS${EPISODE_NUMBER}-2026`;
+
+// LocalStorage otomatis: eps4_unlocked
+const storageKey = `eps${EPISODE_NUMBER}_unlocked`;
+
+
+/* =====================================================
+   CEK STATUS UNLOCK
+===================================================== */
+if(localStorage.getItem(storageKey) === "true"){
+  document.getElementById("lockScreen").style.display = "none";
+}
+
+
+/* =====================================================
+   WHATSAPP AUTO MESSAGE DINAMIS
+===================================================== */
+function openWhatsApp(){
+  window.location.href =
+  `https://wa.me/6285775279438?text=Halo%20Playcraft%20Studio%2C%20saya%20ingin%20membuka%20Episode%20${EPISODE_NUMBER}`;
+}
+
+
+/* =====================================================
+   VALIDASI KODE UNLOCK
+===================================================== */
+function checkPass(){
+  const input = document.getElementById("passInput").value.trim();
+
+  if(input === correctPass){
+    localStorage.setItem(storageKey,"true");
+    document.getElementById("lockScreen").style.display = "none";
+  }else{
+    alert("Kode salah. Silakan hubungi WhatsApp.");
+  }
+}
+
+/* =====================================================
+   DEFAULT ENGINE (IDENTIK EPS 3)
+===================================================== */
+
+let currentSheet = 0;
+let sheets;
+let totalPages;
+let narration;
+let isFlipping = false;
+
+window.onload = function(){
+
+  sheets = document.querySelectorAll(".sheet");
+  totalPages = sheets.length - 1;
+  narration = document.getElementById("narration");
+
+  sheets.forEach((sheet, index)=>{
+    sheet.style.zIndex = sheets.length - index;
+  });
+
+  const intro = document.getElementById("intro");
+  const sound = document.getElementById("whoosh");
+  const bgMusic = document.getElementById("bgMusic");
+  const book = document.getElementById("book");
+  const startBtn = document.getElementById("startBtn");
+  const endScreen = document.getElementById("endScreen");
+  const restartBtn = document.getElementById("restartBtn");
+  const exitBtn = document.getElementById("exitBtn");
+  const pageNumber = document.getElementById("pageNumber");
+
+  sound.play().catch(()=>{});
+  setTimeout(()=>{
+    intro.style.opacity="0";
+    setTimeout(()=>intro.style.display="none",1000);
+  },3000);
+
+  startBtn.addEventListener("click",function(e){
+    e.stopPropagation();
+    startBtn.style.display="none";
+    bgMusic.play().catch(()=>{});
+    flipNext();
+  });
+
+  book.addEventListener("click",function(e){
+    if(endScreen.classList.contains("show")) return;
+    const rect = book.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    if(clickX > rect.width/2){
+      flipNext();
+    }else{
+      flipPrev();
+    }
+  });
+
+  restartBtn.addEventListener("click",function(e){
+    e.stopPropagation();
+    endScreen.classList.remove("show");
+    while(currentSheet > 0){
+      currentSheet--;
+      sheets[currentSheet].classList.remove("flipped");
+    }
+    narration.pause();
+    narration.currentTime = 0;
+    bgMusic.pause();
+    bgMusic.currentTime = 0;
+    startBtn.style.display="block";
+    pageNumber.style.display="none";
+  });
+
+  exitBtn.addEventListener("click",function(e){
+    e.stopPropagation();
+    window.location.href = "../";
+  });
+
+};
+
+function flipNext(){
+  if(isFlipping) return;
+  if(currentSheet >= sheets.length) return;
+
+  isFlipping = true;
+  sheets[currentSheet].classList.add("flipped");
+  currentSheet++;
+
+  setTimeout(()=>{ isFlipping = false; },1200);
+
+  if(currentSheet === sheets.length){
+    document.getElementById("endScreen").classList.add("show");
+    narration.pause();
+    document.getElementById("pageNumber").style.display="none";
+    return;
+  }
+
+  updatePageNumber();
+  playNarration(currentSheet);
+}
+
+function flipPrev(){
+  if(isFlipping) return;
+  if(currentSheet <= 0) return;
+
+  isFlipping = true;
+  currentSheet--;
+  sheets[currentSheet].classList.remove("flipped");
+
+  setTimeout(()=>{ isFlipping = false; },1200);
+
+  updatePageNumber();
+  playNarration(currentSheet);
+}
+
+function updatePageNumber(){
+  const pageNumber = document.getElementById("pageNumber");
+  if(currentSheet === 0){
+    pageNumber.style.display="none";
+    return;
+  }
+  pageNumber.style.display="block";
+  pageNumber.textContent = currentSheet + " / " + totalPages;
+}
+
+function playNarration(page){
+  if(page === 0) return;
+  if(page > totalPages) return;
+
+  narration.pause();
+  narration.currentTime = 0;
+  narration.src = "audio/" + page + ".mp3";
+  narration.play().catch(()=>{});
+}
+
+</script>
+
+</body>
+</html>
