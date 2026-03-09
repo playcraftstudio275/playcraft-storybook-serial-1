@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+
+<!-- =====================================================
+     VIEWPORT FIX (Mobile Safe)
+===================================================== -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<title>Playcraft Storybook</title>
+
+<style>
+
+/* =====================================================
+   GLOBAL BODY
+===================================================== */
+body{
+  margin:0;
+  background:black;
+  overflow-x:hidden;
+  overflow-y:hidden;
+  font-family:Arial;
+}
+
+/* =====================================================
+   INTRO SCREEN
+===================================================== */
+#intro{
+  position:fixed;
+  inset:0;
+  background:black;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
+  transition:opacity 1s ease;
+}
+
+.logo{
+  color:white;
+  font-size:2rem;
+  letter-spacing:4px;
+  opacity:0;
+  animation:fadeIn 1.5s forwards;
+}
+
+@keyframes fadeIn{
+  to{opacity:1;}
+}
+
+/* =====================================================
+   BOOK CONTAINER
+===================================================== */
+.book{
+  position:absolute;
+  width:70vw;
+  height:85vh;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  perspective:3000px;
+}
+
+/* =====================================================
+   SHEET
+===================================================== */
+.sheet{
+  position:absolute;
+  width:100%;
+  height:100%;
+  transform-origin:left;
+  transform-style:preserve-3d;
+  transition:transform 1.2s ease-in-out;
+  backface-visibility:hidden;
+}
+
+/* =====================================================
+   COVER
+===================================================== */
+.coverSheet{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#111;
+}
+
+.coverSheet img{
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+}
+
+/* =====================================================
+   PAGE
+===================================================== */
+.page{
+  position:absolute;
+  width:50%;
+  height:100%;
+  top:0;
+  overflow:hidden;
+}
+
+.page img{
+  width:100%;
+  height:100%;
+  object-fit:cover; /* desktop tetap full */
+}
+
+/* ==========================================
+   MOBILE FIX - GAMBAR TIDAK TERPOTONG
+========================================== */
+@media (max-width:768px){
+
+  .page img{
+    object-fit:contain;  /* supaya tidak terpotong */
+    background:black;    /* isi ruang kosong */
+  }
+
+}
+
+.left{ left:0; }
+.right{ right:0; }
+
+/* =====================================================
+   FLIP EFFECT
+===================================================== */
+.sheet.flipped{
+  transform:rotateY(-180deg);
+}
+
+/* =====================================================
+   START BUTTON
+===================================================== */
+.startBtn{
+  position:absolute;
+  bottom:30px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:12px 28px;
+  border:none;
+  border-radius:30px;
+  background:white;
+  cursor:pointer;
+  font-weight:bold;
+  z-index:50;
+}
+
+/* =====================================================
+   END SCREEN
+===================================================== */
+.endScreen{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:20px;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.4s ease;
+  z-index:999;
+}
+
+.endScreen.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.endScreen button{
+  background:#E79A34;
+  color:white;
+  border:none;
+  padding:16px 42px;
+  font-size:18px;
+  border-radius:40px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+/* =====================================================
+   PAGE NUMBER
+===================================================== */
+.pageNumber{
+  position:absolute;
+  bottom:15px;
+  right:20px;
+  color:white;
+  font-size:14px;
+  opacity:0.8;
+  z-index:50;
+  display:none;
+}
+
+/* =====================================================
+   RESPONSIVE MOBILE SAFE
+===================================================== */
+@media (max-width:768px){
+
+  .book{
+    width:95vw;
+    height:85vh;
+  }
+
+  .page{
+    width:50%;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+<div id="intro">
+  <div class="logo">PLAYCRAFT STUDIO</div>
+</div>
+
+<!-- AUDIO -->
+<audio id="whoosh" src="audio/whoosh.mp3"></audio>
+<audio id="bgMusic" src="audio/bg.mp3" loop></audio>
+<audio id="narration"></audio>
+
+<div class="book" id="book">
+
+  <!-- COVER -->
+  <div class="sheet coverSheet">
+    <img src="image/0.jpg">
+    <button class="startBtn" id="startBtn">Mulai Cerita</button>
+  </div>
+
+ <!-- ==== SEMUA SHEET TETAP SAMA ==== -->
+<!-- SHEET 1 - 9 (tidak diubah) -->
+
+<!-- SHEET 1 -->
+<div class="sheet">
+  <div class="page left">
+    <img src="image/1b.jpg">
+  </div>
+  <div class="page right">
+    <img src="image/1a.jpg">
+  </div>
+</div>
+
+<!-- SHEET 2 -->
+<div class="sheet">
+  <div class="page left">
+    <img src="image/2b.jpg">
+  </div>
+  <div class="page right">
+    <img src="image/2a.jpg">
+  </div>
+</div>
+
+<!-- SHEET 3 -->
+<div class="sheet">
+  <div class="page left">
+    <img src="image/3b.jpg">
+  </div>
+  <div class="page right">
+    <img src="image/3a.jpg">
+  </div>
+</div>
+
+<!-- SHEET 4 -->
+<div class="sheet">
+  <div class="page left">
+    <img src="image/4b.jpg">
+  </div>
+  <div class="page right">
+    <img src="image/4a.jpg">
+  </div>
+</div>
+
+<!-- SHEET 5 -->
+<div class="sheet">
+  <div class="page left">
+    <img src="image/5b.jpg">
+  </div>
+  <div class="page right">
+    <img src="image/5a.jpg">
+  </div>
+</div>
+
+<!-- SHEET 6 -->
+<div class="sheet">
+  <div class="page left">
+    <img src="image/6b.jpg">
+  </div>
+  <div class="page right">
+    <img src="image/6a.jpg">
+  </div>
+</div>
+
+<!-- SHEET 7 -->
+<div class="sheet">
+  <div class="page left">
+    <img src="image/7b.jpg">
+  </div>
+  <div class="page right">
+    <img src="image/7a.jpg">
+  </div>
+</div>
+
+<!-- SHEET 8 -->
+<div class="sheet">
+  <div class="page left">
+    <img src="image/8b.jpg">
+  </div>
+  <div class="page right">
+    <img src="image/8a.jpg">
+  </div>
+</div>
+
+<!-- SHEET 9 -->
+<div class="sheet">
+  <div class="page left">
+    <img src="image/9b.jpg">
+  </div>
+  <div class="page right">
+    <img src="image/9a.jpg">
+  </div>
+</div>
+
+
+  <div class="pageNumber" id="pageNumber"></div>
+
+  <div class="endScreen" id="endScreen">
+    <button id="restartBtn">Ulangi</button>
+    <button id="exitBtn">Keluar</button>
+  </div>
+
+</div>
+
+<script>
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+let currentSheet = 0;
+let sheets;
+let totalPages;
+let narration;
+let isFlipping = false;
+
+/* =====================================================
+   INIT
+===================================================== */
+window.onload = function(){
+
+  sheets = document.querySelectorAll(".sheet");
+  totalPages = sheets.length - 1;
+  narration = document.getElementById("narration");
+
+  sheets.forEach((sheet, index)=>{
+    sheet.style.zIndex = sheets.length - index;
+  });
+
+  const intro = document.getElementById("intro");
+  const sound = document.getElementById("whoosh");
+  const bgMusic = document.getElementById("bgMusic");
+  const book = document.getElementById("book");
+  const startBtn = document.getElementById("startBtn");
+  const endScreen = document.getElementById("endScreen");
+  const restartBtn = document.getElementById("restartBtn");
+  const exitBtn = document.getElementById("exitBtn");
+  const pageNumber = document.getElementById("pageNumber");
+
+  bgMusic.volume = 0;
+
+  /* INTRO */
+  sound.play().catch(()=>{});
+  setTimeout(()=>{
+    intro.style.opacity="0";
+    setTimeout(()=>intro.style.display="none",1000);
+  },3000);
+
+  /* START BUTTON FIX */
+  startBtn.addEventListener("click",function(e){
+    e.stopPropagation();
+
+    // HILANGKAN tombol supaya tidak ikut flip
+    startBtn.style.display = "none";
+
+    bgMusic.play().catch(()=>{});
+
+    let fade = setInterval(()=>{
+      if(bgMusic.volume < 0.1){
+        bgMusic.volume += 0.01;
+      } else {
+        clearInterval(fade);
+      }
+    },200);
+
+    flipNext();
+  });
+
+  /* CLICK BOOK */
+  book.addEventListener("click",function(e){
+    if(endScreen.classList.contains("show")) return;
+
+    const rect = book.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+
+    if(clickX > rect.width/2){
+      flipNext();
+    }else{
+      flipPrev();
+    }
+  });
+
+  /* RESTART */
+  restartBtn.addEventListener("click",function(e){
+    e.stopPropagation();
+    endScreen.classList.remove("show");
+
+    while(currentSheet > 0){
+      currentSheet--;
+      sheets[currentSheet].classList.remove("flipped");
+    }
+
+    narration.pause();
+    narration.currentTime = 0;
+
+    bgMusic.pause();
+    bgMusic.currentTime = 0;
+
+    startBtn.style.display = "block";
+    pageNumber.style.display = "none";
+  });
+
+  /* EXIT (STABLE GITHUB) */
+  exitBtn.addEventListener("click",function(e){
+    e.stopPropagation();
+    window.location.href = "../";
+  });
+
+};
+
+/* =====================================================
+   NEXT
+===================================================== */
+function flipNext(){
+
+  if(isFlipping) return;
+  if(currentSheet >= sheets.length) return;
+
+  isFlipping = true;
+
+  sheets[currentSheet].classList.add("flipped");
+  currentSheet++;
+
+  setTimeout(()=>{ isFlipping = false; },1200);
+
+  if(currentSheet === sheets.length){
+    document.getElementById("endScreen").classList.add("show");
+    narration.pause();
+    document.getElementById("pageNumber").style.display="none";
+    return;
+  }
+
+  updatePageNumber();
+  playNarration(currentSheet);
+}
+
+/* =====================================================
+   PREV
+===================================================== */
+function flipPrev(){
+
+  if(isFlipping) return;
+  if(currentSheet <= 0) return;
+
+  isFlipping = true;
+
+  currentSheet--;
+  sheets[currentSheet].classList.remove("flipped");
+
+  setTimeout(()=>{ isFlipping = false; },1200);
+
+  updatePageNumber();
+  playNarration(currentSheet);
+}
+
+/* =====================================================
+   PAGE NUMBER
+===================================================== */
+function updatePageNumber(){
+
+  const pageNumber = document.getElementById("pageNumber");
+
+  if(currentSheet === 0){
+    pageNumber.style.display="none";
+    return;
+  }
+
+  pageNumber.style.display="block";
+  pageNumber.textContent = currentSheet + " / " + totalPages;
+}
+
+/* =====================================================
+   NARRATION
+===================================================== */
+function playNarration(page){
+
+  if(page === 0) return;
+  if(page > totalPages) return;
+
+  narration.pause();
+  narration.currentTime = 0;
+
+  narration.src = "audio/" + page + ".mp3";
+  narration.play().catch(()=>{});
+}
+
+</script>
+
+</body>
+</html>
